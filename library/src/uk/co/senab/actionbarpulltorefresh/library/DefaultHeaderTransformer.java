@@ -363,7 +363,7 @@ public class DefaultHeaderTransformer extends HeaderTransformer {
             mHeaderProgressBar.setIndeterminateDrawable(
                     new SmoothProgressDrawable.Builder(mHeaderProgressBar.getContext())
                             .color(mProgressDrawableColor)
-                            .strokeWidth(strokeWidth)
+                            .strokeWidth(mProgressBarHeight)
                             .build());
 
             ShapeDrawable shape = new ShapeDrawable();
