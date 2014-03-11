@@ -1,7 +1,21 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.+'
+    }
+}
+repositories {
+    mavenCentral()
+}
+
 apply plugin: 'android-library'
 
 dependencies {
-    compile 'com.github.castorflex.smoothprogressbar:library:0.2.0'
+    compile 'com.github.castorflex.smoothprogressbar:library:0.3.3'
 }
 
 android {
