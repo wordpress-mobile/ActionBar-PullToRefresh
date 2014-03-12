@@ -25,13 +25,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import java.util.HashSet;
-
 import uk.co.senab.actionbarpulltorefresh.library.listeners.HeaderViewListener;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import uk.co.senab.actionbarpulltorefresh.library.viewdelegates.ViewDelegate;
 
 /**
@@ -116,7 +112,6 @@ public class PullToRefreshLayout extends FrameLayout {
         ensureAttacher();
         return mPullToRefreshAttacher.getHeaderTransformer();
     }
-
 
     @Override
     public final boolean onInterceptTouchEvent(MotionEvent event) {

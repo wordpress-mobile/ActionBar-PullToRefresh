@@ -68,6 +68,11 @@ public abstract class HeaderTransformer {
     public void onReleaseToRefresh() {}
 
     /**
+     * Called when a subview hit the top scrolled position
+     */
+    public void onTopScrollChanged(boolean scrolledOnTop) {}
+
+    /**
      * Called when the current refresh has taken longer than the time
      * specified in {@link Options#refreshMinimizeDelay}.
      */

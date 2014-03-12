@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 
 import java.util.WeakHashMap;
 
@@ -73,6 +74,7 @@ public class PullToRefreshAttacher {
 
     private final int[] mViewLocationResult = new int[2];
     private final Rect mRect = new Rect();
+    private boolean mSubviewScrolledOnTop;
 
     private final AddHeaderViewRunnable mAddHeaderViewRunnable;
 
@@ -149,6 +151,7 @@ public class PullToRefreshAttacher {
 
         // View to detect refreshes for
         mRefreshableViews.put(view, viewDelegate);
+        setOnScrollListener(view);
     }
 
     void useViewDelegate(Class<?> viewClass, ViewDelegate delegate) {
@@ -156,6 +159,33 @@ public class PullToRefreshAttacher {
             if (viewClass.isInstance(view)) {
                 mRefreshableViews.put(view, delegate);
             }
+        }
+    }
+
+    /**
+     * Set on scroll listener to detect scroll events
+     */
+    void setOnScrollListener(View view) {
+        if (view instanceof AbsListView) {
+            ((AbsListView) view).setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView v, int scrollState) {
+                }
+
+                @Override
+                public void onScroll(AbsListView v, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    View childView = v.getChildAt(0);
+                    int offset = 0;
+                    if (childView != null) {
+                        offset = childView.getTop();
+                    }
+                    boolean oldSubviewScrolledOnTop = mSubviewScrolledOnTop;
+                    mSubviewScrolledOnTop = firstVisibleItem == 0 && Math.abs(offset) < 10;
+                    if (mSubviewScrolledOnTop != oldSubviewScrolledOnTop) {
+                        mHeaderTransformer.onTopScrollChanged(mSubviewScrolledOnTop);
+                    }
+                }
+            });
         }
     }
 
@@ -358,12 +388,10 @@ public class PullToRefreshAttacher {
                 if (isRefreshing()) {
                     return false;
                 }
-
                 final float y = event.getY();
 
                 if (mIsBeingDragged && y != mLastMotionY) {
                     final float yDx = y - mLastMotionY;
-
                     /**
                      * Check to see if the user is scrolling the right direction
                      * (down). We allow a small scroll up which is the check against
