@@ -1,5 +1,5 @@
 
-VERSION=0.9.4
+VERSION=0.9.5
 GROUP_ID=org.wordpress
 
 # Push to the local maven repo

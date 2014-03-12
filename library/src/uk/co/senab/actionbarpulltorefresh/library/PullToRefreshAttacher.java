@@ -158,6 +158,7 @@ public class PullToRefreshAttacher {
         for (View view : mRefreshableViews.keySet()) {
             if (viewClass.isInstance(view)) {
                 mRefreshableViews.put(view, delegate);
+                setOnScrollListener(view);
             }
         }
     }
