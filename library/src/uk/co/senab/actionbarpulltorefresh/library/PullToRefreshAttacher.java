@@ -78,6 +78,8 @@ public class PullToRefreshAttacher {
 
     private final AddHeaderViewRunnable mAddHeaderViewRunnable;
 
+    private boolean mRefreshDisabled;
+
     protected PullToRefreshAttacher(Activity activity, Options options) {
         if (activity == null) {
             throw new IllegalArgumentException("activity cannot be null");
@@ -188,6 +190,10 @@ public class PullToRefreshAttacher {
                 }
             });
         }
+    }
+
+    public void setRefreshDisabled(boolean disabled) {
+        mRefreshDisabled = disabled;
     }
 
     /**
@@ -455,6 +461,10 @@ public class PullToRefreshAttacher {
             Log.d(LOG_TAG, "onPull");
         }
 
+        if (mRefreshDisabled) {
+            return ;
+        }
+
         final float pxScrollForRefresh = getScrollNeededForRefresh(view);
         final float scrollLength = y - mPullBeginY;
 
@@ -525,6 +535,10 @@ public class PullToRefreshAttacher {
     }
 
     private boolean checkScrollForRefresh(View view) {
+        if (mRefreshDisabled) {
+            return false;
+        }
+
         if (mIsBeingDragged && mRefreshOnUp && view != null) {
             if (mLastMotionY - mPullBeginY >= getScrollNeededForRefresh(view)) {
                 setRefreshingInt(view, true, true);

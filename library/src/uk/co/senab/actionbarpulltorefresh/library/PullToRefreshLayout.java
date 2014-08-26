@@ -106,6 +106,14 @@ public class PullToRefreshLayout extends FrameLayout {
     }
 
     /**
+     * @return The Attacher
+     */
+    public final PullToRefreshAttacher getAttacher() {
+        ensureAttacher();
+        return mPullToRefreshAttacher;
+    }
+
+    /**
      * @return The HeaderTransformer currently used by this Attacher.
      */
     public HeaderTransformer getHeaderTransformer() {
